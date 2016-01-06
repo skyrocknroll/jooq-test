@@ -33,8 +33,7 @@ public class JooqTest {
 
         // Connection is the only JDBC resource that we need
         // PreparedStatement and ResultSet are handled by jOOQ, internally
-        try {
-            DSLContext create = DSL.using(ds, SQLDialect.MYSQL);
+        try (DSLContext create = DSL.using(ds, SQLDialect.MYSQL)) {
             Result<Record> result = create.select().from(AUTHOR).fetch();
             for (Record r : result) {
                 Integer id = r.getValue(AUTHOR.ID);
@@ -45,10 +44,7 @@ public class JooqTest {
             }
 //            create.select().from(AUTHOR).where(AUTHOR.ID.equal(1));
 
-        }
-
-        // For the sake of this tutorial, let's keep exception handling simple
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
